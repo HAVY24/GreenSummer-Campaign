@@ -55,12 +55,16 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center text-green-600 mb-6">
-        Đăng ký tài khoản
-      </h2>
+    <div className="mb-4 bg-white text-black ">
 
-      {error && <Alert type="error" message={error} className="mb-4" />}
+      {error && (
+        <Alert
+          type="error"
+          message={error}
+          className="mb-4 bg-white text-red-500 border border-red-500"
+        />
+      )}
+
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -150,11 +154,12 @@ const RegisterForm = () => {
         <Button
           type="submit"
           variant="primary"
-          className="w-full"
+          className="w-full bg-black text-black hover:bg-gray-800"
           disabled={isLoading}
         >
           {isLoading ? "Đang xử lý..." : "Đăng ký"}
         </Button>
+
       </form>
     </div>
   );

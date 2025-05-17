@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getUserProfile } from "../api/auth";
+import { getUserProfile, registerUser, loginUser } from "../api/auth";
 
 // Create context
 export const AuthContext = createContext();
@@ -37,6 +37,10 @@ export const AuthProvider = ({ children }) => {
     setToken(token);
     setUser(userData);
   };
+  const handleLogin = async (credentials) => {
+    const { token, user } = await loginUser(credentials);
+    login(user, token); // dùng lại logic sẵn có
+  };
 
   // Logout user
   const logout = () => {
@@ -51,6 +55,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };
+  // === Hàm mới: REGISTER ===
+  const register = async (formData) => {
+    const { token, user } = await registerUser(formData); // giả sử backend trả về token + user
+    login(user, token); // dùng lại logic login luôn
+  };
 
   return (
     <AuthContext.Provider
@@ -58,9 +67,10 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: !!token,
         user,
         loading,
-        login,
+        login: handleLogin,
         logout,
         updateUser,
+        register,
       }}
     >
       {children}
