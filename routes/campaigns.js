@@ -16,13 +16,14 @@ router
   .get(getCampaigns)
   .post(protect, authorize("admin"), createCampaign);
 
+router.get("/count", protect, getCampaignsCount);
 router
   .route("/:id")
   .get(getCampaignById)
   .put(protect, authorize("admin"), updateCampaign)
   .delete(protect, authorize("admin"), deleteCampaign);
 
-router.get("/count", protect, getCampaignsCount);
+
 // Thêm vào routes/campaigns.js
 
 module.exports = router;
