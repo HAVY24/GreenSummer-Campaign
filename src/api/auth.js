@@ -22,3 +22,8 @@ export const updateUserProfile = async (userData) => {
   const response = await api.put("/api/auth/profile", userData);
   return response.data;
 };
+// Get all users 
+export const getAllUsers = async () => {
+  const response = await api.get("/api/auth/users");
+  return response.data;
+};

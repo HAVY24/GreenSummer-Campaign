@@ -1,16 +1,37 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import Alert from "../ui/Alert";
+import Select from "../ui/Select";
+import { getAllUsers } from "../../api/auth";
+
+
 
 const MemberForm = ({
   onSubmit,
   initialData = null,
-  users = [],
+  users: usersProp = [],  // đổi tên prop users thành usersProp
   loading = false,
   error = null,
 }) => {
+  const [users, setUsers] = useState([]);
+  const [userLoading, setUserLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const data = await getAllUsers();
+      setUsers(data);
+    } catch (err) {
+      console.error("Failed to fetch users", err);
+    } finally {
+      setUserLoading(false);
+    }
+  };
   const {
     register,
     handleSubmit,
@@ -44,9 +65,9 @@ const MemberForm = ({
     // Convert responsibilities from comma-separated string to array
     const responsibilities = data.responsibilities
       ? data.responsibilities
-          .split(",")
-          .map((item) => item.trim())
-          .filter((item) => item)
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item)
       : [];
 
     return {
@@ -124,8 +145,8 @@ const MemberForm = ({
           {loading
             ? "Đang xử lý..."
             : initialData
-            ? "Cập nhật"
-            : "Thêm thành viên"}
+              ? "Cập nhật"
+              : "Thêm thành viên"}
         </Button>
       </div>
     </form>
