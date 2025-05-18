@@ -98,6 +98,16 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllUsers = asyncHandler(async (req, res) => {
+  try {
+    const users = await User.find().select("-password"); // ẩn mật khẩu
+    res.json(users);
+  } catch (error) {
+    console.error("Get users failed:", error);
+    res.status(500).json({ message: "Failed to fetch users" });
+  }
+});
+
 // Generate JWT token
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
@@ -109,4 +119,5 @@ module.exports = {
   loginUser,
   getUserProfile,
   registerUser,
+  getAllUsers,
 };
