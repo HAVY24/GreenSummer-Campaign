@@ -36,7 +36,7 @@ const Activities = () => {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Campaign Activities</h1>
-        {roleCheck(user, ["admin", "leader"]) && (
+        {roleCheck.hasRequiredRole(user?.role, ["admin", "leader"]) && (
           <Link to={`/campaigns/${campaignId}/activities/create`}>
             <Button variant="primary">Create Activity</Button>
           </Link>

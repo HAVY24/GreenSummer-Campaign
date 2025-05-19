@@ -38,8 +38,21 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
   };
   const handleLogin = async (credentials) => {
-    const { token, user } = await loginUser(credentials);
-    login(user, token); // dùng lại logic sẵn có
+    try {
+      const response = await loginUser(credentials);
+
+      // Kiểm tra response có đúng định dạng không
+      if (!response.token || !response.user) {
+        throw new Error("Invalid server response");
+      }
+
+      const { token, user } = response;
+      login(user, token);
+      return { success: true };
+    } catch (error) {
+      console.error("Login failed:", error);
+      throw error; 
+    }
   };
 
   // Logout user

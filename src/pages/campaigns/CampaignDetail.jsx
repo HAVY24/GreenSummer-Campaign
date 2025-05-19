@@ -164,7 +164,7 @@ const CampaignDetailPage = () => {
       {activeTab === "info" && (
         <Card className="mb-6">
           <div className="p-6">
-            <CampaignDetail campaign={campaign} />
+            <CampaignDetail campaign={campaign} onDelete={handleDelete} />
           </div>
         </Card>
       )}

@@ -43,3 +43,10 @@ export const getActivity = async (id) => {
   const response = await api.get(`/api/activities/${id}`);
   return response.data;
 };
+
+export const getActivityById = async (campaignId, id) => {
+  const response = await api.get(
+    `/api/campaigns/${campaignId}/activities/${id}`
+  );
+  return response.data;
+};

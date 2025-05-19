@@ -1,3 +1,4 @@
+// src/components/forms/MemberForm.jsx
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../ui/Input";
@@ -6,32 +7,16 @@ import Alert from "../ui/Alert";
 import Select from "../ui/Select";
 import { getAllUsers } from "../../api/auth";
 
-
-
 const MemberForm = ({
   onSubmit,
   initialData = null,
-  users: usersProp = [],  // đổi tên prop users thành usersProp
+  users: usersProp = [],
   loading = false,
   error = null,
 }) => {
-  const [users, setUsers] = useState([]);
-  const [userLoading, setUserLoading] = useState(true);
+  const [users, setUsers] = useState(usersProp);
+  const [userLoading, setUserLoading] = useState(!usersProp.length);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
-    try {
-      const data = await getAllUsers();
-      setUsers(data);
-    } catch (err) {
-      console.error("Failed to fetch users", err);
-    } finally {
-      setUserLoading(false);
-    }
-  };
   const {
     register,
     handleSubmit,
@@ -45,7 +30,23 @@ const MemberForm = ({
       responsibilities: "",
       status: "active",
     },
+    shouldUnregister: true,
   });
+
+  useEffect(() => {
+    if (!usersProp.length) fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const data = await getAllUsers();
+      setUsers(data);
+    } catch (err) {
+      console.error("Failed to fetch users", err);
+    } finally {
+      setUserLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (initialData) {
@@ -53,21 +54,18 @@ const MemberForm = ({
       setValue("role", initialData.role);
       setValue(
         "responsibilities",
-        initialData.responsibilities
-          ? initialData.responsibilities.join(", ")
-          : ""
+        initialData.responsibilities?.join(", ") || ""
       );
       setValue("status", initialData.status);
     }
   }, [initialData, setValue]);
 
   const processFormData = (data) => {
-    // Convert responsibilities from comma-separated string to array
     const responsibilities = data.responsibilities
       ? data.responsibilities
-        .split(",")
-        .map((item) => item.trim())
-        .filter((item) => item)
+          .split(",")
+          .map((item) => item.trim())
+          .filter((item) => item)
       : [];
 
     return {
@@ -90,7 +88,7 @@ const MemberForm = ({
           label="Thành viên"
           {...register("userId", { required: "Vui lòng chọn thành viên" })}
           error={errors.userId?.message}
-          disabled={loading || !!initialData}
+          disabled={loading || !!initialData || userLoading}
         >
           <option value="">-- Chọn thành viên --</option>
           {users.map((user) => (
@@ -117,7 +115,7 @@ const MemberForm = ({
         <Input
           label="Trách nhiệm (phân cách bằng dấu phẩy)"
           {...register("responsibilities")}
-          placeholder="Tổ chức sự kiện, Liên hệ đối tác, Quản lý tình nguyện viên..."
+          placeholder="Tổ chức sự kiện, Liên hệ đối tác..."
           disabled={loading}
         />
       </div>
@@ -145,8 +143,8 @@ const MemberForm = ({
           {loading
             ? "Đang xử lý..."
             : initialData
-              ? "Cập nhật"
-              : "Thêm thành viên"}
+            ? "Cập nhật"
+            : "Thêm thành viên"}
         </Button>
       </div>
     </form>

@@ -157,7 +157,7 @@ function App() {
             }
           />
           <Route
-            path="campaigns/:campaignId/activities/:id"
+            path="campaigns/:campaignId/activities/:activityId"
             element={
               <ProtectedRoute>
                 <ActivityDetail />
@@ -173,7 +173,7 @@ function App() {
             }
           />
           <Route
-            path="campaigns/:campaignId/activities/:id/edit"
+            path="campaigns/:campaignId/activities/:activityId/edit"
             element={
               <ProtectedRoute allowedRoles={["admin", "leader"]}>
                 <EditActivity />

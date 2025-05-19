@@ -63,12 +63,19 @@ const ActivityCard = ({ activity, campaignId }) => {
             </span>{" "}
             người tham gia
           </div>
-          <Link
-            to={`/campaigns/${campaignId}/activities/${activity._id}`}
-            className="text-green-600 hover:text-green-800 text-sm font-medium"
-          >
-            Xem chi tiết
-          </Link>
+          {activity._id ? (
+            <>
+              {console.log(activity._id)}
+              <Link
+                to={`/campaigns/${campaignId}/activities/${activity._id}`}
+                className="text-green-600 hover:text-green-800 text-sm font-medium"
+              >
+                Xem chi tiết
+              </Link>
+            </>
+          ) : (
+            <span className="text-gray-400 text-sm italic">Đang tải...</span>
+          )}
         </div>
       </div>
     </div>

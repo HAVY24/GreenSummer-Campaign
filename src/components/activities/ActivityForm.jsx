@@ -5,7 +5,12 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Alert from "../ui/Alert";
 
-const ActivityForm = ({ editMode = false, initialData = {} }) => {
+const ActivityForm = ({
+  editMode = false,
+  initialData = {},
+  onSubmit,
+  isSubmitting = false,
+}) => {
   const navigate = useNavigate();
   const { campaignId } = useParams();
   const [error, setError] = useState(null);
@@ -36,7 +41,6 @@ const ActivityForm = ({ editMode = false, initialData = {} }) => {
     setError(null);
 
     try {
-      // Format requirements as array
       const requirementsArray = formData.requirements
         ? formData.requirements
             .split(",")
@@ -49,10 +53,10 @@ const ActivityForm = ({ editMode = false, initialData = {} }) => {
         requirements: requirementsArray,
       };
 
-      if (editMode) {
-        // Implement update logic when needed
+      if (onSubmit) {
+        await onSubmit(activityData); // <-- Gọi hàm từ EditActivity
       } else {
-        await createActivity(campaignId, activityData);
+        await createActivity(campaignId, activityData); // Mặc định dùng khi tạo mới
         navigate(`/campaigns/${campaignId}/activities`);
       }
     } catch (err) {
@@ -204,8 +208,12 @@ const ActivityForm = ({ editMode = false, initialData = {} }) => {
         >
           Hủy
         </Button>
-        <Button type="submit" disabled={loading}>
-          {loading ? "Đang xử lý..." : editMode ? "Cập nhật" : "Tạo hoạt động"}
+        <Button type="submit" disabled={loading || isSubmitting}>
+          {loading || isSubmitting
+            ? "Đang xử lý..."
+            : editMode
+            ? "Cập nhật"
+            : "Tạo hoạt động"}
         </Button>
       </div>
     </form>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getActivity, registerForActivity } from "../../api/activities";
+import { getActivityById, registerForActivity } from "../../api/activities";
 import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
 import Card from "../../components/ui/Card";
@@ -22,7 +22,7 @@ const ActivityDetail = () => {
   useEffect(() => {
     const fetchActivity = async () => {
       try {
-        const data = await getActivity(activityId);
+        const data = await getActivityById(campaignId, activityId);
         setActivity(data);
         setLoading(false);
       } catch (err) {
@@ -32,7 +32,7 @@ const ActivityDetail = () => {
     };
 
     fetchActivity();
-  }, [activityId]);
+  }, [campaignId, activityId]);
 
   const handleRegister = async () => {
     setRegistering(true);
@@ -85,7 +85,7 @@ const ActivityDetail = () => {
             </div>
           </div>
 
-          {roleCheck(user, ["admin", "leader"]) && (
+          {roleCheck.hasRequiredRole(user?.role, ["admin", "leader"]) && (
             <Link to={`/campaigns/${campaignId}/activities/${activityId}/edit`}>
               <Button variant="secondary">Edit Activity</Button>
             </Link>

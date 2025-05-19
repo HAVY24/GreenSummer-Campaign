@@ -21,7 +21,7 @@ const ActivityDetail = () => {
   useEffect(() => {
     const fetchActivity = async () => {
       try {
-        const data = await getActivityById(activityId);
+        const data = await getActivityById(campaignId, activityId);
         setActivity(data);
       } catch (err) {
         setError(err.message || "Could not fetch activity details");
@@ -31,7 +31,7 @@ const ActivityDetail = () => {
     };
 
     fetchActivity();
-  }, [activityId]);
+  }, [campaignId, activityId]);
 
   const handleRegister = async () => {
     setRegisterLoading(true);

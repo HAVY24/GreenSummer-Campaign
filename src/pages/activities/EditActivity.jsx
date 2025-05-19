@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getActivity, updateActivity } from "../../api/activities";
+import { getActivityById, updateActivity } from "../../api/activities";
 import ActivityForm from "../../components/activities/ActivityForm";
 import Card from "../../components/ui/Card";
 import Alert from "../../components/ui/Alert";
@@ -16,7 +16,7 @@ const EditActivity = () => {
   useEffect(() => {
     const fetchActivity = async () => {
       try {
-        const data = await getActivity(activityId);
+        const data = await getActivityById(campaignId, activityId);
         setActivity(data);
         setLoading(false);
       } catch (err) {
@@ -26,7 +26,7 @@ const EditActivity = () => {
     };
 
     fetchActivity();
-  }, [activityId]);
+  }, [campaignId, activityId]);
 
   const handleSubmit = async (activityData) => {
     setSubmitting(true);
