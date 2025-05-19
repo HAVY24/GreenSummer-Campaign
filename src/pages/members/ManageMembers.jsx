@@ -35,6 +35,7 @@ const ManageMembers = () => {
   const fetchMembers = async () => {
     try {
       const data = await getCampaignMembers(campaignId);
+      console.log(data);
       setMembers(data);
       setLoading(false);
     } catch (err) {

@@ -69,7 +69,7 @@ const Home = () => {
                 Khám phá chiến dịch
               </Link>
               <Link
-                to="/auth/login"
+                to="/register"
                 className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-lg font-medium transition-colors"
               >
                 Tham gia ngay

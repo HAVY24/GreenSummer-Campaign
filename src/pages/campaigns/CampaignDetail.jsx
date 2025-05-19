@@ -42,7 +42,7 @@ const CampaignDetailPage = () => {
           getTasks(id),
           getCampaignMembers(id),
         ]);
-
+       
         setActivities(activitiesData);
         setTasks(tasksData);
         setMembers(membersData);
@@ -119,41 +119,37 @@ const CampaignDetailPage = () => {
       <div className="mb-6">
         <div className="flex border-b">
           <button
-            className={`py-2 px-4 font-medium ${
-              activeTab === "info"
+            className={`py-2 px-4 font-medium ${activeTab === "info"
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-500"
-            }`}
+              }`}
             onClick={() => setActiveTab("info")}
           >
             Thông tin
           </button>
           <button
-            className={`py-2 px-4 font-medium ${
-              activeTab === "activities"
+            className={`py-2 px-4 font-medium ${activeTab === "activities"
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-500"
-            }`}
+              }`}
             onClick={() => setActiveTab("activities")}
           >
             Hoạt động ({activities.length})
           </button>
           <button
-            className={`py-2 px-4 font-medium ${
-              activeTab === "tasks"
+            className={`py-2 px-4 font-medium ${activeTab === "tasks"
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-500"
-            }`}
+              }`}
             onClick={() => setActiveTab("tasks")}
           >
             Nhiệm vụ ({tasks.length})
           </button>
           <button
-            className={`py-2 px-4 font-medium ${
-              activeTab === "members"
+            className={`py-2 px-4 font-medium ${activeTab === "members"
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-500"
-            }`}
+              }`}
             onClick={() => setActiveTab("members")}
           >
             Thành viên ({members.length})
@@ -214,7 +210,7 @@ const CampaignDetailPage = () => {
               </p>
             </Card>
           ) : (
-            <TaskList tasks={tasks} campaignId={id} />
+            <TaskList tasks={tasks} campaignId={id} viewMode="card" />
           )}
         </div>
       )}
@@ -239,7 +235,7 @@ const CampaignDetailPage = () => {
               </p>
             </Card>
           ) : (
-            <MemberList members={members} campaignId={id} />
+            <MemberList members={members} campaignId={id} viewMode="card"  />
           )}
         </div>
       )}

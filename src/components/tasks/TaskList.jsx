@@ -84,6 +84,8 @@ const TaskList = ({
     },
   ];
 
+  console.log("TaskList tasks:", tasks);
+
   if (tasks.length === 0) {
     return (
       <div className="text-center py-10">
