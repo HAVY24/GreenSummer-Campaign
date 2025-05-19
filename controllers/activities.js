@@ -120,6 +120,21 @@ const getActivitiesCount = asyncHandler(async (req, res) => {
   res.json({ count });
 });
 
+const getActivityById = asyncHandler(async (req, res) => {
+  const { campaignId, id } = req.params;
+
+  const activity = await Activity.findOne({ _id: id, campaign: campaignId })
+    .populate("organizer", "username fullName")
+    .populate("participants", "username fullName");
+
+  if (!activity) {
+    res.status(404);
+    throw new Error("Không tìm thấy hoạt động");
+  }
+
+  res.json(activity);
+});
+
 module.exports = {
   getCampaignActivities,
   createActivity,
@@ -127,4 +142,5 @@ module.exports = {
   deleteActivity,
   registerForActivity,
   getActivitiesCount,
+  getActivityById,
 };

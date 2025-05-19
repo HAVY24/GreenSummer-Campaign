@@ -110,7 +110,7 @@ const deleteCampaign = asyncHandler(async (req, res) => {
     throw new Error("Campaign not found");
   }
 
-  await campaign.remove();
+  await campaign.deleteOne();
   res.json({ message: "Campaign removed" });
 });
 

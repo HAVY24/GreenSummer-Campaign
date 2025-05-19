@@ -6,6 +6,7 @@ const {
   deleteActivity,
   registerForActivity,
   getActivitiesCount,
+  getActivityById,
 } = require("../controllers/activities");
 const { protect, authorize } = require("../middlewares/auth");
 
@@ -18,6 +19,7 @@ router
 
 router
   .route("/:id")
+  .get(protect, getActivityById)
   .put(protect, authorize("admin", "leader"), updateActivity)
   .delete(protect, authorize("admin", "leader"), deleteActivity);
 
