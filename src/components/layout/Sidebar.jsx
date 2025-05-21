@@ -48,7 +48,7 @@ const Sidebar = ({ open, setOpen }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-600 bg-opacity-75" />
+            <div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
           </Transition.Child>
           <Transition.Child
             as={Fragment}
@@ -91,21 +91,21 @@ const Sidebar = ({ open, setOpen }) => {
                     <Link
                       key={item.name}
                       to={item.href}
-                      className={`${
-                        location.pathname === item.href
-                          ? "bg-green-100 text-green-900"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                      } group flex items-center px-2 py-2 text-base font-medium rounded-md`}
+                      className={`${location.pathname === item.href
+                        ? "bg-green-100 text-green-900"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        } group flex items-center px-2 py-2 text-base font-medium rounded-md`}
                       onClick={() => setOpen(false)}
                     >
-                      <item.icon
-                        className={`${
-                          location.pathname === item.href
+                      {item.icon && (
+                        <item.icon
+                          className={`${location.pathname === item.href
                             ? "text-green-500"
                             : "text-gray-400 group-hover:text-gray-500"
-                        } mr-4 flex-shrink-0 h-6 w-6`}
-                        aria-hidden="true"
-                      />
+                            } mr-4 flex-shrink-0 h-6 w-6`}
+                          aria-hidden="true"
+                        />
+                      )}
                       {item.name}
                     </Link>
                   ))}
@@ -129,8 +129,8 @@ const Sidebar = ({ open, setOpen }) => {
                         {user?.role === "admin"
                           ? "Quản trị viên"
                           : user?.role === "leader"
-                          ? "Trưởng nhóm"
-                          : "Tình nguyện viên"}
+                            ? "Trưởng nhóm"
+                            : "Tình nguyện viên"}
                       </p>
                     </div>
                   </div>
@@ -159,20 +159,20 @@ const Sidebar = ({ open, setOpen }) => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`${
-                      location.pathname === item.href
-                        ? "bg-green-100 text-green-900"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                    } group flex items-center px-2 py-2 text-sm font-medium rounded-md`}
+                    className={`${location.pathname === item.href
+                      ? "bg-green-100 text-green-900"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      } group flex items-center px-2 py-2 text-sm font-medium rounded-md`}
                   >
-                    <item.icon
-                      className={`${
-                        location.pathname === item.href
+                    {item.icon && (
+                      <item.icon
+                        className={`${location.pathname === item.href
                           ? "text-green-500"
                           : "text-gray-400 group-hover:text-gray-500"
-                      } mr-3 flex-shrink-0 h-5 w-5`}
-                      aria-hidden="true"
-                    />
+                          } mr-4 flex-shrink-0 h-6 w-6`}
+                        aria-hidden="true"
+                      />
+                    )}
                     {item.name}
                   </Link>
                 ))}
@@ -196,8 +196,8 @@ const Sidebar = ({ open, setOpen }) => {
                       {user?.role === "admin"
                         ? "Quản trị viên"
                         : user?.role === "leader"
-                        ? "Trưởng nhóm"
-                        : "Tình nguyện viên"}
+                          ? "Trưởng nhóm"
+                          : "Tình nguyện viên"}
                     </p>
                   </div>
                 </div>

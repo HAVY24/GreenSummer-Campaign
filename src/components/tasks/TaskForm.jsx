@@ -39,10 +39,14 @@ const TaskForm = ({
       setValue("title", initialData.title);
       setValue("description", initialData.description);
       setValue("assignedTo", initialData.assignedTo?._id);
-      setValue(
-        "dueDate",
-        new Date(initialData.dueDate).toISOString().split("T")[0]
-      );
+      if (initialData.dueDate && !isNaN(new Date(initialData.dueDate).getTime())) {
+        setValue(
+          "dueDate",
+          new Date(initialData.dueDate).toISOString().split("T")[0]
+        );
+      } else {
+        setValue("dueDate", new Date().toISOString().split("T")[0]);
+      }
       setValue("priority", initialData.priority);
       setValue("status", initialData.status);
       setValue("completionNotes", initialData.completionNotes || "");
@@ -163,8 +167,8 @@ const TaskForm = ({
           {loading
             ? "Đang xử lý..."
             : initialData
-            ? "Cập nhật"
-            : "Tạo nhiệm vụ"}
+              ? "Cập nhật"
+              : "Tạo nhiệm vụ"}
         </Button>
       </div>
     </form>

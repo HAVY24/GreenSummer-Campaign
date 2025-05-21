@@ -2,8 +2,10 @@ import React from "react";
 import Card from "../ui/Card";
 import Badge from "../ui/Badge";
 import Button from "../ui/Button";
+import Select from "../ui/Select";
 
-const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
+const TaskCard = ({ task, onEdit = () => { }, onDelete = () => { }, onStatusChange }) => {
+  
   const {
     _id,
     title,
@@ -18,11 +20,11 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
   const getPriorityBadge = (priority) => {
     switch (priority) {
       case "high":
-        return <Badge type="error">Cao</Badge>;
+        return <Badge color="red">Cao</Badge>;
       case "medium":
-        return <Badge type="warning">Trung bình</Badge>;
+        return <Badge color="yellow">Trung bình</Badge>;
       case "low":
-        return <Badge type="success">Thấp</Badge>;
+        return <Badge color="green">Thấp</Badge>;
       default:
         return <Badge>Không xác định</Badge>;
     }
@@ -31,13 +33,13 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
   const getStatusBadge = (status) => {
     switch (status) {
       case "pending":
-        return <Badge type="default">Chờ xử lý</Badge>;
+        return <Badge color="gray">Chờ xử lý</Badge>;
       case "in_progress":
-        return <Badge type="primary">Đang thực hiện</Badge>;
+        return <Badge color="blue">Đang thực hiện</Badge>;
       case "completed":
-        return <Badge type="success">Hoàn thành</Badge>;
+        return <Badge color="green">Hoàn thành</Badge>;
       case "cancelled":
-        return <Badge type="error">Đã hủy</Badge>;
+        return <Badge color="red">Đã hủy</Badge>;
       default:
         return <Badge>Không xác định</Badge>;
     }
@@ -104,7 +106,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange }) => {
 
       <div className="flex justify-end space-x-2 mt-2">
         <Button size="sm" variant="outline" onClick={onEdit}>
-          Chi tiết
+          Sửa
         </Button>
         <Button size="sm" variant="outline" color="danger" onClick={onDelete}>
           Xóa

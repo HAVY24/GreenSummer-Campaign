@@ -217,7 +217,7 @@ function App() {
             }
           />
           <Route
-            path="campaigns/:campaignId/tasks/:id/edit"
+            path="campaigns/:campaignId/tasks/:taskId/edit"
             element={
               <ProtectedRoute>
                 <EditTask />

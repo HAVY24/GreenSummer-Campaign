@@ -18,10 +18,11 @@ const EditTask = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      
       try {
         setLoading(true);
         const [taskData, membersData] = await Promise.all([
-          getTask(taskId),
+          getTask(taskId,campaignId),
           getCampaignMembers(campaignId),
         ]);
         setTask(taskData);
@@ -42,7 +43,7 @@ const EditTask = () => {
     try {
       setSubmitting(true);
       setError(null);
-      await updateTask(taskId, updatedTaskData);
+      await updateTask(taskId, campaignId, updatedTaskData);
       setSuccess(true);
 
       // Redirect after short delay to show success message

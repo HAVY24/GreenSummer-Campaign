@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getTasks } from "../../api/tasks";
+import { getTasks, deleteTask } from "../../api/tasks"; 
 import TaskList from "../../components/tasks/TaskList";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
@@ -19,6 +19,7 @@ const Tasks = () => {
       try {
         setLoading(true);
         const data = await getTasks(campaignId);
+        console.log("Tasks data:", data);
         setTasks(data);
         setError(null);
       } catch (err) {
@@ -32,11 +33,23 @@ const Tasks = () => {
     fetchTasks();
   }, [campaignId]);
 
+  const handleDeleteTask = async (taskId) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa nhiệm vụ này không?")) {
+      try {
+        await deleteTask(taskId, campaignId);
+        setTasks(tasks.filter((task) => task._id !== taskId));
+      } catch (err) {
+        setError("Không thể xóa nhiệm vụ. Vui lòng thử lại.");
+        console.error("Error deleting task:", err);
+      }
+    }
+  };
+
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Tasks Management</h1>
-        {roleCheck(user, ["admin", "leader"]) && (
+        {roleCheck.hasRequiredRole(user?.role, ["admin", "leader"]) && (
           <Link to={`/campaigns/${campaignId}/tasks/create`}>
             <Button>Create New Task</Button>
           </Link>
@@ -56,14 +69,18 @@ const Tasks = () => {
           <p className="text-gray-500 mb-4">
             No tasks available for this campaign.
           </p>
-          {roleCheck(user, ["admin", "leader"]) && (
+          {roleCheck.hasRequiredRole(user?.role, ["admin", "leader"]) && (
             <Link to={`/campaigns/${campaignId}/tasks/create`}>
               <Button>Create First Task</Button>
             </Link>
           )}
         </Card>
       ) : (
-        <TaskList tasks={tasks} campaignId={campaignId} />
+        <TaskList
+          tasks={tasks}
+          campaignId={campaignId}
+          onDelete={handleDeleteTask}
+        />
       )}
     </div>
   );
