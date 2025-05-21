@@ -5,6 +5,7 @@ const {
   updateTask,
   deleteTask,
   getTasksCount,
+  getTask,
 } = require("../controllers/tasks");
 const { protect, authorize } = require("../middlewares/auth");
 
@@ -15,11 +16,13 @@ router
   .get(protect, getCampaignTasks)
   .post(protect, authorize("admin", "leader"), createTask);
 
-router
+  
+  router.get("/count", protect, getTasksCount);
+  router
   .route("/:id")
+  .get(protect, getTask)
   .put(protect, updateTask)
   .delete(protect, authorize("admin", "leader"), deleteTask);
-
-router.get("/count", protect, getTasksCount);
+  
 
 module.exports = router;

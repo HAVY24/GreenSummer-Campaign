@@ -85,7 +85,7 @@ const deleteTask = asyncHandler(async (req, res) => {
     throw new Error("Task not found");
   }
 
-  await task.remove();
+  await Task.deleteOne({ _id: req.params.id });
   res.json({ message: "Task removed" });
 });
 
@@ -94,10 +94,24 @@ const getTasksCount = asyncHandler(async (req, res) => {
   res.json({ count });
 });
 
+
+const getTask = asyncHandler(async (req, res) => {
+  const task = await Task.findById(req.params.id)
+    .populate('assignedTo', 'fullName email')
+    .populate('assignedBy', 'fullName email');
+    
+  if (!task) {
+    return res.status(404).json({ success: false, message: 'Task not found' });
+  }
+  
+  res.status(200).json({ success: true, data: task });
+});
+
 module.exports = {
   getCampaignTasks,
   createTask,
   updateTask,
   deleteTask,
   getTasksCount,
+  getTask
 };
