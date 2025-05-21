@@ -87,7 +87,7 @@ const removeCampaignMember = asyncHandler(async (req, res) => {
     throw new Error("Member not found in this campaign");
   }
 
-  await member.remove();
+  await Member.deleteOne({ _id: member._id });
   res.json({ message: "Member removed from campaign" });
 });
 
