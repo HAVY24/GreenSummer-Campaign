@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getCampaignMembers } from "../../api/members";
+import { getCampaignMembers, removeCampaignMember} from "../../api/members";
 import MemberList from "../../components/members/MemberList";
 import Button from "../../components/ui/Button";
 import { useAuth } from "../../hooks/useAuth";
@@ -39,8 +39,8 @@ const Members = () => {
   const handleDeleteMember = async (memberId) => {
     if (window.confirm("Are you sure you want to delete this member?")) {
       try {
-        // Gọi API xóa thành viên ở đây nếu cần
-        // Sau đó cập nhật danh sách
+
+        await removeCampaignMember(campaignId, memberId)
         const updatedMembers = members.filter(
           (member) => member._id !== memberId
         );
@@ -59,7 +59,7 @@ const Members = () => {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Campaign Members</h1>
-        {roleCheck(user, ["admin", "leader"]) && (
+        {roleCheck.hasRequiredRole(user?.role, ["admin", "leader"]) && (
           <Link to={`/campaigns/${campaignId}/members/manage`}>
             <Button variant="primary">Manage Members</Button>
           </Link>
@@ -73,11 +73,14 @@ const Members = () => {
       ) : (
         <MemberList
           members={members}
+          viewMode="card"
           onEdit={
-            roleCheck(user, ["admin", "leader"]) ? handleEditMember : undefined
+            roleCheck.hasRequiredRole(user?.role, ["admin", "leader"])
+              ? handleEditMember
+              : undefined
           }
           onDelete={
-            roleCheck(user, ["admin", "leader"])
+            roleCheck.hasRequiredRole(user?.role, ["admin", "leader"])
               ? handleDeleteMember
               : undefined
           }

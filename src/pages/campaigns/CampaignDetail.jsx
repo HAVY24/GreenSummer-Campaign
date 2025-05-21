@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { getCampaignById, deleteCampaign } from "../../api/campaigns";
 import { getActivitiesByCampaign } from "../../api/activities";
 import { getTasks, deleteTask } from "../../api/tasks";
-import { getCampaignMembers } from "../../api/members";
+import { getCampaignMembers, removeCampaignMember } from "../../api/members";
 import CampaignDetail from "../../components/campaigns/CampaignDetail";
 import ActivityList from "../../components/activities/ActivityList";
 import TaskList from "../../components/tasks/TaskList";
@@ -213,19 +213,18 @@ const CampaignDetailPage = () => {
             <TaskList tasks={tasks} campaignId={id} viewMode="card"
               onEdit={(task) => navigate(`/campaigns/${id}/tasks/${task._id}/edit`)}
               onDelete={async (taskId) => {
-            if (window.confirm("Bạn có chắc chắn muốn xóa nhiệm vụ này không?")) {
-              try {
-                await deleteTask(taskId, id);
-                // Cập nhật danh sách tasks sau khi xóa
-                setTasks(tasks.filter(task => task._id !== taskId));
-              } catch (err) {
-                console.error("Error deleting task:", err);
-                alert("Không thể xóa nhiệm vụ. Vui lòng thử lại.");
-              }
-            }
-          }}
+                if (window.confirm("Bạn có chắc chắn muốn xóa nhiệm vụ này không?")) {
+                  try {
+                    await deleteTask(taskId, id);
+                    setTasks(tasks.filter(task => task._id !== taskId));
+                  } catch (err) {
+                    console.error("Error deleting task:", err);
+                    alert("Không thể xóa nhiệm vụ. Vui lòng thử lại.");
+                  }
+                }
+              }}
             />
-            
+
           )}
         </div>
       )}
@@ -250,7 +249,19 @@ const CampaignDetailPage = () => {
               </p>
             </Card>
           ) : (
-            <MemberList members={members} campaignId={id} viewMode="card" />
+            <MemberList members={members} campaignId={id} viewMode="card"
+              onDelete={async (memberId) => {
+                if (window.confirm("Bạn có chắc chắn muốn xóa thành viên này không?")) {
+                  try {
+                    await removeCampaignMember(id, memberId);
+                    setMembers(members.filter(member => member._id !== memberId));
+                  } catch (err) {
+                    console.error("Error deleting member:", err);
+                    alert("Không thể xóa thành viên. Vui lòng thử lại.");
+                  }
+                }
+              }}
+            />
           )}
         </div>
       )}
