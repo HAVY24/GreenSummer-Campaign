@@ -4,7 +4,12 @@ import Table from "../ui/Table";
 import Badge from "../ui/Badge";
 import Button from "../ui/Button";
 
-const MemberList = ({ members, onEdit, onDelete, viewMode = "table" }) => {
+const MemberList = ({
+  members,
+  onEdit = () => {},
+  onDelete = () => {},
+  viewMode = "table",
+}) => {
   const [selectedMember, setSelectedMember] = useState(null);
 
   const columns = [

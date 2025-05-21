@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { getCampaignMembers } from "../../api/members";
 import MemberList from "../../components/members/MemberList";
 import Button from "../../components/ui/Button";
@@ -8,6 +8,7 @@ import { roleCheck } from "../../utils/roleCheck";
 
 const Members = () => {
   const { campaignId } = useParams();
+  const navigate = useNavigate();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,6 +28,28 @@ const Members = () => {
 
     fetchMembers();
   }, [campaignId]);
+
+  const handleEditMember = (member) => {
+    // Chuyển hướng đến trang chỉnh sửa thành viên
+    navigate(`/campaigns/${campaignId}/members/manage`, {
+      state: { editMember: member },
+    });
+  };
+
+  const handleDeleteMember = async (memberId) => {
+    if (window.confirm("Are you sure you want to delete this member?")) {
+      try {
+        // Gọi API xóa thành viên ở đây nếu cần
+        // Sau đó cập nhật danh sách
+        const updatedMembers = members.filter(
+          (member) => member._id !== memberId
+        );
+        setMembers(updatedMembers);
+      } catch (err) {
+        setError("Failed to delete member");
+      }
+    }
+  };
 
   if (loading)
     return <div className="flex justify-center p-8">Loading members...</div>;
@@ -48,7 +71,17 @@ const Members = () => {
           <p className="text-gray-500">No members found for this campaign</p>
         </div>
       ) : (
-        <MemberList members={members} />
+        <MemberList
+          members={members}
+          onEdit={
+            roleCheck(user, ["admin", "leader"]) ? handleEditMember : undefined
+          }
+          onDelete={
+            roleCheck(user, ["admin", "leader"])
+              ? handleDeleteMember
+              : undefined
+          }
+        />
       )}
     </div>
   );

@@ -56,7 +56,6 @@ const RegisterForm = () => {
 
   return (
     <div className="mb-4 bg-white text-black ">
-
       {error && (
         <Alert
           type="error"
@@ -64,7 +63,6 @@ const RegisterForm = () => {
           className="mb-4 bg-white text-red-500 border border-red-500"
         />
       )}
-
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -147,7 +145,6 @@ const RegisterForm = () => {
           >
             <option value="volunteer">Tình nguyện viên</option>
             <option value="leader">Đội trưởng</option>
-            <option value="admin">Quản trị viên</option>
           </select>
         </div>
 
@@ -159,7 +156,6 @@ const RegisterForm = () => {
         >
           {isLoading ? "Đang xử lý..." : "Đăng ký"}
         </Button>
-
       </form>
     </div>
   );

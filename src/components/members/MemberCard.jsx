@@ -65,10 +65,19 @@ const MemberCard = ({ member, onEdit, onDelete }) => {
       )}
 
       <div className="flex justify-end space-x-2 mt-4">
-        <Button size="sm" variant="outline" onClick={onEdit}>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => typeof onEdit === "function" && onEdit()}
+        >
           Sửa
         </Button>
-        <Button size="sm" variant="outline" color="danger" onClick={onDelete}>
+        <Button
+          size="sm"
+          variant="outline"
+          color="danger"
+          onClick={() => typeof onDelete === "function" && onDelete()}
+        >
           Xóa
         </Button>
       </div>
